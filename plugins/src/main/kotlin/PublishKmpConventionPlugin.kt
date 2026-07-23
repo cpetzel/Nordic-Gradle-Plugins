@@ -139,34 +139,47 @@ class PublishKmpConventionPlugin : Plugin<Project> {
             }
 
             afterEvaluate {
-                // Configure SPDX SBOM generation.
-                extensions.configure<SpdxSbomExtension> {
-                    targets.register("release") {
-                        // By default, the 'configurations' have only 1 item: "runtimeClasspath".
-                        // Prefer the jvm target's runtime classpath, as it best represents the
-                        // full common dependency graph — but not every KMP module declares a
-                        // jvm() target, so fall back to whatever classpath configuration is
-                        // actually present instead of hardcoding one that may not exist.
-                        listOf("jvmRuntimeClasspath", "releaseRuntimeClasspath", "runtimeClasspath")
-                            .firstOrNull { project.configurations.findByName(it) != null }
-                            ?.let { configurations.set(listOf(it)) }
-                        with (nordicPublishing) {
-                            scm {
-                                uri.set(pomScmUrl)
-                                revision.set(gitRevision)
-                            }
-                            document {
-                                // TODO Use name.set(pomArtifactId) when it is converted to Property
-                                name.set("$group:${pomArtifactId.get()}")
-                                namespace.set(pomUrl.map { "$it${pomArtifactId.get()}/$version/spdx" })
-                                creator.set(pomOrg.map { "Organization: $it" })
-                                packageSupplier.set(pomOrg.map { "Organization: $it" })
+                // Configure SPDX SBOM generation, resolved from the jvm target's runtime
+                // classpath as it best represents the full common dependency graph. Not every
+                // KMP module declares a jvm() target, and the other platforms' runtime
+                // classpaths aren't a safe substitute here: Android's (named
+                // "androidRuntimeClasspath" under the newer "Android Kotlin Multiplatform
+                // Library" AGP plugin) needs build-type/etc. variant attributes that a bare
+                // resolve like this doesn't supply, and fails with variant-ambiguity errors
+                // against any Android dependency exposing multiple variants. So modules without
+                // a jvm() target simply don't get an SBOM artifact, rather than crashing here or
+                // resolving one against an arbitrary/ambiguous variant.
+                val sbomClasspathConfiguration =
+                    "jvmRuntimeClasspath".takeIf { project.configurations.findByName(it) != null }
+                val spdxTask = sbomClasspathConfiguration?.let { classpathConfiguration ->
+                    extensions.configure<SpdxSbomExtension> {
+                        targets.register("release") {
+                            // By default, the 'configurations' have only 1 item: "runtimeClasspath".
+                            configurations.set(listOf(classpathConfiguration))
+                            with (nordicPublishing) {
+                                scm {
+                                    uri.set(pomScmUrl)
+                                    revision.set(gitRevision)
+                                }
+                                document {
+                                    // TODO Use name.set(pomArtifactId) when it is converted to Property
+                                    name.set("$group:${pomArtifactId.get()}")
+                                    namespace.set(pomUrl.map { "$it${pomArtifactId.get()}/$version/spdx" })
+                                    creator.set(pomOrg.map { "Organization: $it" })
+                                    packageSupplier.set(pomOrg.map { "Organization: $it" })
+                                }
                             }
                         }
                     }
-                }
-                val spdxTask = tasks.named("spdxSbomForRelease") {
-                    fixSpdx(project.group.toString(), nordicPublishing)
+                    tasks.named("spdxSbomForRelease") {
+                        fixSpdx(project.group.toString(), nordicPublishing)
+                    }
+                } ?: run {
+                    logger.log(
+                        LogLevel.WARN,
+                        "WARNING: Skipping SPDX SBOM generation for module ':$name' — no jvm() target declared, so there is no unambiguous runtime classpath to resolve it from."
+                    )
+                    null
                 }
 
                 extensions.configure<PublishingExtension> {
@@ -204,7 +217,7 @@ class PublishKmpConventionPlugin : Plugin<Project> {
                         //   If iOS module has some extra dependencies they won't be included here
                         //   in the SBOM. If we reach this situation, we should perhaps add
                         //   SBOM for iOS artifacts as well.
-                        if (name == "kotlinMultiplatform") {
+                        if (name == "kotlinMultiplatform" && spdxTask != null) {
                             artifact(spdxTask) {
                                 classifier = "sbom"
                                 extension = "json"
