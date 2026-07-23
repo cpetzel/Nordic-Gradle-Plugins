@@ -143,7 +143,13 @@ class PublishKmpConventionPlugin : Plugin<Project> {
                 extensions.configure<SpdxSbomExtension> {
                     targets.register("release") {
                         // By default, the 'configurations' have only 1 item: "runtimeClasspath".
-                        configurations.set(listOf("jvmRuntimeClasspath"))
+                        // Prefer the jvm target's runtime classpath, as it best represents the
+                        // full common dependency graph — but not every KMP module declares a
+                        // jvm() target, so fall back to whatever classpath configuration is
+                        // actually present instead of hardcoding one that may not exist.
+                        listOf("jvmRuntimeClasspath", "releaseRuntimeClasspath", "runtimeClasspath")
+                            .firstOrNull { project.configurations.findByName(it) != null }
+                            ?.let { configurations.set(listOf(it)) }
                         with (nordicPublishing) {
                             scm {
                                 uri.set(pomScmUrl)
