@@ -1,6 +1,6 @@
 [versions]
 minSdk = "23"
-androidGradlePlugin = "9.2.1"
+androidGradlePlugin = "9.3.1"
 kotlin = "2.4.0" # When changes, update also kotlinAndroid.kt
 ksp = "2.3.10"
 androidxActivity = "1.13.0"
@@ -50,11 +50,11 @@ kotlinxSerializationJson = "1.11.0"
 kotlinxCollectionsImmutable = "0.5.1"
 kotlinCompose = "1.11.1"
 javaAnnotations = "26.1.0" # https://github.com/JetBrains/java-annotations
-lint = "32.2.1"
+lint = "32.3.1"
 material = "1.14.0"
 memfault-cloud = "2.1.0"
 okhttp = "5.4.0"
-okio = "3.17.0"
+okio = "3.18.1"
 protobuf = "4.35.1"
 protobufPlugin = "0.10.0"
 publishPlugin = "2.1.1"
@@ -74,7 +74,7 @@ slf4j = "2.0.18"
 slf4j-timber = "1.2"
 robolectric = "4.16.1"
 skydovesBallon = "1.7.6"
-skydovesCloudy = "0.7.0"
+skydovesCloudy = "0.7.1"
 moshi = "1.15.2"
 koin = "4.2.2"
 kmmVoyager = "2.2.21-1.10.3"
@@ -87,7 +87,7 @@ compottie="2.2.4"
 jetbrains-compose = "1.11.1" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrains-material3 = "1.9.0"
 jetbrains-material-icons-extended = "1.7.3"
-jetbrains-androidx-lifecycle = "2.10.0"
+jetbrains-androidx-lifecycle = "2.11.0"
 jetbrains-navigation3-ui = "1.1.1"
 jetbrains-material3-adaptive-navigation3 = "1.3.0-beta02"
 
@@ -97,7 +97,7 @@ dokkaPlugin = "2.2.0"
 googleServicesPlugins = "4.4.2"
 firebaseCrashlyticsPlugins = "3.0.2"
 kmmIosPublishPlugin = "2.0.3"
-spdxPlugin = "0.11.0" # https://github.com/spdx/spdx-gradle-plugin
+spdxPlugin = "0.12.0" # https://github.com/spdx/spdx-gradle-plugin
 
 [libraries]
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanistPlaceholder" }
