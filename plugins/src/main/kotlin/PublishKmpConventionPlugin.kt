@@ -195,15 +195,26 @@ class PublishKmpConventionPlugin : Plugin<Project> {
                     }
                     // KMP creates publications automatically for each target.
                     // Configure all of them with common settings.
+                    val moduleName = project.name
                     publications.withType<MavenPublication>().configureEach {
                         // Set publication properties.
                         with(nordicPublishing) {
-                            // Note: artifactId should NOT be set for KMP modules.
-                            //       Those are set automatically based on the platform.
                             // TODO Use groupId.set(pomGroup) when it is converted to Property
                             groupId = pomGroup.getOrElse(group.toString())
                             // TODO Same here
                             version = gitVersion
+                            // Unlike single-platform modules, artifactId cannot just be set to
+                            // POM_ARTIFACT_ID here: KMP creates one publication per target and they
+                            // must keep distinct coordinates. Kotlin has already named them after the
+                            // Gradle module -- "<module>" for the root "kotlinMultiplatform"
+                            // publication and "<module>-<target>" for each platform one -- so replace
+                            // only that prefix and leave the platform suffix intact.
+                            //
+                            // Left unset, artifactId silently keeps the Gradle module name, which is
+                            // rarely what the module wants to be published as.
+                            pomArtifactId.orNull?.let {
+                                artifactId = it + artifactId.removePrefix(moduleName)
+                            }
                         }
                         // Apply POM configuration.
                         pom {
