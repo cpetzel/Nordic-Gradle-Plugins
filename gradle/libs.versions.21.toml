@@ -1,14 +1,14 @@
 [versions]
 minSdk = "21"
-androidGradlePlugin = "9.2.1"
-kotlin = "2.4.0" # When changes, update also kotlinAndroid.kt
+androidGradlePlugin = "9.3.1"
+kotlin = "2.4.10" # When changes, update also kotlinAndroid.kt
 ksp = "2.3.10"
 androidxActivity = "1.11.0" # Don't update
 androidxAnnotation = "1.10.0"
 androidxAppCompat = "1.7.1"
 androidxCardview = "1.0.0"
 androidxConstraintlayout = "2.2.1"
-androidxComposeBom = "2025.10.00" # https://developer.android.com/jetpack/compose/bom/bom-mapping
+androidxComposeBom = "2025.10.00" # Don't update, to keep minSdk at 21. https://developer.android.com/jetpack/compose/bom/bom-mapping
 androidxComposeRuntimeTracing = "1.9.5" # Don't update
 androidxCore = "1.17.0" # Don't update
 androidxCoreSplashscreen = "1.2.0"
@@ -50,11 +50,11 @@ kotlinxSerializationJson = "1.11.0"
 kotlinxCollectionsImmutable = "0.5.1"
 kotlinCompose = "1.11.1"
 javaAnnotations = "26.1.0" # https://github.com/JetBrains/java-annotations
-lint = "32.2.1"
+lint = "32.3.1"
 material = "1.13.0" # Don't update. Version 1.14.0 increases minSdk to 23.
 memfault-cloud = "2.1.0"
 okhttp = "5.4.0"
-okio = "3.17.0"
+okio = "3.18.1"
 protobuf = "4.35.1"
 protobufPlugin = "0.10.0"
 publishPlugin = "2.1.1"
@@ -90,7 +90,7 @@ jetbrains-material-icons-extended = "1.7.3"
 jetbrains-androidx-lifecycle = "2.10.0"
 
 # Plugin versions
-nordicPlugins = "3.1.2"
+nordicPlugins = "3.2"
 dokkaPlugin = "2.2.0"
 googleServicesPlugins = "4.4.2"
 firebaseCrashlyticsPlugins = "3.0.2"
