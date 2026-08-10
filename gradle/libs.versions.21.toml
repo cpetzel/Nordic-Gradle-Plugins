@@ -2,12 +2,12 @@
 minSdk = "21"
 androidGradlePlugin = "9.3.1"
 kotlin = "2.4.10" # When changes, update also kotlinAndroid.kt
-ksp = "2.3.10"
+ksp = "2.3.11"
 androidxActivity = "1.11.0" # Don't update
 androidxAnnotation = "1.10.0"
 androidxAppCompat = "1.7.1"
 androidxCardview = "1.0.0"
-androidxConstraintlayout = "2.2.1"
+androidxConstraintlayout = "2.2.2"
 androidxComposeBom = "2025.10.00" # Don't update, to keep minSdk at 21. https://developer.android.com/jetpack/compose/bom/bom-mapping
 androidxComposeRuntimeTracing = "1.9.5" # Don't update
 androidxCore = "1.17.0" # Don't update
@@ -87,7 +87,7 @@ compottie="2.2.4"
 jetbrains-compose = "1.11.1" # https://github.com/JetBrains/compose-multiplatform/releases
 jetbrains-material3 = "1.9.0"
 jetbrains-material-icons-extended = "1.7.3"
-jetbrains-androidx-lifecycle = "2.10.0"
+jetbrains-androidx-lifecycle = "2.11.0"
 
 # Plugin versions
 nordicPlugins = "3.2"
@@ -95,7 +95,7 @@ dokkaPlugin = "2.2.0"
 googleServicesPlugins = "4.4.2"
 firebaseCrashlyticsPlugins = "3.0.2"
 kmmIosPublishPlugin = "2.0.3"
-spdxPlugin = "0.11.0" # https://github.com/spdx/spdx-gradle-plugin
+spdxPlugin = "0.12.0" # https://github.com/spdx/spdx-gradle-plugin
 
 [libraries]
 accompanist-placeholder = { group = "com.google.accompanist", name = "accompanist-placeholder-material", version.ref = "accompanistPlaceholder" }
